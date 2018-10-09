@@ -4,14 +4,13 @@ const {mongoose} = require('./db/mongoose');
 
 // requiring db models
 const {User} = require('./models/user');
-const {Todo} = require('./models/Todo');
+const {Todo} = require('./models/todo');
 
 const app = express();
 
 app.use(bodyParser.json());
 
 app.post('/todos', (req, res) => {
-  console.log(req.body);
   var todo = new Todo({text: req.body.text});
   todo.save().then(
     (doc) => {
@@ -23,10 +22,10 @@ app.post('/todos', (req, res) => {
   );
 });
 
-// app.get('/todos', (req, res) => {
-
-// });
-
 app.listen(3333, () => {
   console.log('Started on port 3333');
 });
+
+module.exports = {
+  app
+};
