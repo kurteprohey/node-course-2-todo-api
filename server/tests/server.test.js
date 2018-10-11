@@ -82,7 +82,7 @@ describe('GET /todos/id', (done) => {
       .expect(404)
       .end(done);
   });
-  it('should successfully get user by ID', (done) => {
+  it('should successfuly get user by ID', (done) => {
     request(app)
       .get(`/todos/${todos[0]._id.toHexString()}`)
       .expect(200)
@@ -90,5 +90,34 @@ describe('GET /todos/id', (done) => {
         expect(res.body.todo.text).toBe(todos[0].text);
       })
       .end(done);
+  });
+});
+
+describe('DELETE /todos/:id', (done) => {
+  it('should return 404 if todo is not found', (done) => {
+    request(app)
+      .delete('/todos/asdasd')
+      .expect(404)
+      .end(done);
+  });
+  it('should remove a todo', (done) => {
+    var hexId = todos[1]._id.toHexString();
+
+    request(app)
+      .delete(`/todos/${hexId}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo._id).toBe(hexId);
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        Todo.findById(hexId).then((todo) => {
+          expect(todo).toBeFalsy();
+          done();
+        }).catch((e) => done(e));
+      });
   });
 });
