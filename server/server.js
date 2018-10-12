@@ -45,8 +45,6 @@ app.get('/todos', (req, res) => {
   );
 });
 
-// GET /todos/123213
-
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id;
   console.log(ObjectId.isValid(id));
@@ -106,6 +104,20 @@ app.patch('/todos/:id', (req, res) => {
       },
       (err) => res.status(400).send()
     )
+});
+
+// User routes
+app.post('/users', (req, res) => {
+  var userData = _.pick(req.body, ['email', 'password']);
+  var user = new User(userData);
+  user.save()
+    .then(() => {
+      return user.generateAuthToken();
+    })
+    .then((token) => {
+      res.header('x-auth', token).send({user});
+    })
+    .catch((err) => res.status(400).send());
 });
 
 app.listen(process.env.PORT, () => {
