@@ -9,7 +9,6 @@ if (env === 'development') {
 } else if (env === 'production') {
   process.env.MONGODB_URI = 'mongodb://admin:test123@ds225703.mlab.com:25703/todoappyehor';
 }
-console.log('env', env);
 // library imports
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -20,6 +19,7 @@ const _ = require('lodash');
 // requiring db models
 const {User} = require('./models/user');
 const {Todo} = require('./models/todo');
+const {authenticate} = require('./middleware/authenticate');
 
 const app = express();
 // const port = process.env.PORT || 3333;
@@ -118,6 +118,12 @@ app.post('/users', (req, res) => {
       res.header('x-auth', token).send({user});
     })
     .catch((err) => res.status(400).send());
+});
+
+
+
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 app.listen(process.env.PORT, () => {
