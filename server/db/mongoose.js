@@ -5,8 +5,6 @@ const localDb = 'mongodb://localhost:27017/TodoApp';
 const dbConnectionString = process.env.PORT ? prodDb : localDb;
 
 mongoose.Promise = global.Promise;
-mongoose.connect(localDb, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
-module.exports = {
-  mongoose
-};
+module.exports = {mongoose};

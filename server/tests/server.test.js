@@ -7,7 +7,7 @@ const {Todo} = require('../models/todo');
 
 const todos = [
   {_id: new ObjectId(), text: 'First test todo'},
-  {_id: new ObjectId(), text: 'Second test todo'}
+  {_id: new ObjectId(), text: 'Second test todo', completed: true, completedAt: 333}
 ];
 
 beforeEach((done) => {
@@ -118,6 +118,36 @@ describe('DELETE /todos/:id', (done) => {
           expect(todo).toBeFalsy();
           done();
         }).catch((e) => done(e));
+      });
+  });
+});
+
+describe('PATCH /todos/:id', (done) => {
+  it('should update the todo', (done) => {
+    let newTodo = Object.assign({}, todos[0]);
+    newTodo.completed = true;
+    newTodo.text = 'Updated text of first todo';
+    const targetTodoId = todos[0]._id;
+    request(app)
+      .patch(`/todos/${targetTodoId}`)
+      .send(newTodo)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo.completed).toBe(newTodo.completed);
+        expect(res.body.todo.text).toBe(newTodo.text);
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        Todo.findById(targetTodoId).then(
+          (todo) => {
+            expect(todo.text).toEqual(newTodo.text);
+            expect(todo.completed).toBe(newTodo.completed);
+            done();
+          },
+          (err) => done(err)
+        )
       });
   });
 });

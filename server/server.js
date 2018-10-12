@@ -1,14 +1,26 @@
+// prepare the env variable
+const env = process.env.NODE_ENV || 'development';
+if (env === 'development') {
+  process.env.PORT = 3333;
+  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp';
+} else if (env === 'test') {
+  process.env.PORT = 3333;
+  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAppTest';
+}
+console.log('env', env);
+// library imports
 const express = require('express');
 const bodyParser = require('body-parser');
 const {mongoose} = require('./db/mongoose');
 const {ObjectId} = require('mongodb');
 const _ = require('lodash');
+
 // requiring db models
 const {User} = require('./models/user');
 const {Todo} = require('./models/todo');
 
 const app = express();
-const port = process.env.PORT || 3333;
+// const port = process.env.PORT || 3333;
 
 app.use(bodyParser.json());
 
@@ -94,8 +106,8 @@ app.patch('/todos/:id', (req, res) => {
     )
 });
 
-app.listen(port, () => {
-  console.log(`Started on port ${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Started on port ${process.env.PORT}`);
 });
 
 module.exports = {
