@@ -7,7 +7,7 @@ module.exports.authenticate = (req, res, next) => {
       if (!user) {
         return Promise.reject();
       }
-      req.user = user.toJSON();
+      req.user = user;
       req.token = token;
       next();
     })
