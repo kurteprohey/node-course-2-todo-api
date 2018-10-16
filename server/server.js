@@ -120,10 +120,8 @@ app.post('/users', (req, res) => {
     .catch((err) => res.status(400).send());
 });
 
-
-
 app.get('/users/me', authenticate, (req, res) => {
-  res.send(req.user);
+  res.send({user: req.user});
 });
 
 app.listen(process.env.PORT, () => {
