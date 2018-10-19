@@ -9,6 +9,6 @@ if (env === 'development' || env === 'test') {
   });
 }
 
-if (env === 'production') {
-  process.env.MONGODB_URI = 'mongodb://admin:test123@ds225703.mlab.com:25703/todoappyehor';
-}
+// if (env === 'production') {
+//   process.env.MONGODB_URI = 'mongodb://admin:test123@ds225703.mlab.com:25703/todoappyehor';
+// }
