@@ -1,14 +1,5 @@
-// prepare the env variable
-const env = process.env.NODE_ENV || 'development';
-if (env === 'development') {
-  process.env.PORT = 3333;
-  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp';
-} else if (env === 'test') {
-  process.env.PORT = 3333;
-  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAppTest';
-} else if (env === 'production') {
-  process.env.MONGODB_URI = 'mongodb://admin:test123@ds225703.mlab.com:25703/todoappyehor';
-}
+// set up env variables
+require('./config/config');
 // library imports
 const express = require('express');
 const bodyParser = require('body-parser');
